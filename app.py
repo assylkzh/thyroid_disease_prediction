@@ -1,12 +1,20 @@
 import streamlit as st
 import joblib
 import pandas as pd
-import numpy as np
 from PIL import Image
 from ultralytics import YOLO
 from catboost import CatBoostClassifier
-import lightgbm as lgb
 import xgboost as xgb
+
+# Label mapping
+label_map = {
+    0: 'Hyperthyroid',
+    1: 'Hypothyroid',
+    2: 'Negative',
+    3: 'Non-thyroidal Illness',
+    4: 'Replacement Therapy',
+    5: 'Treatment Effect'
+}
 
 st.set_page_config(page_title="Thyroid AI & YOLO", layout="wide")
 st.title("🧠 Thyroid Detection & YOLO App")
@@ -18,9 +26,8 @@ model_type = st.sidebar.selectbox("Select Model Type", [
 
 def binarize(val): return 1 if val == "t" else 0
 
-# Full feature input form
 def get_patient_input():
-    age = st.slider("Age", 0, 100, 30)
+    age = st.slider("Age", 0, 100, 30, help="Patient's age in years")
     sex = st.selectbox("Sex", ["F", "M"])
 
     def tf(label): return st.selectbox(label, ["f", "t"])
@@ -79,8 +86,26 @@ def get_patient_input():
         'FTI_measured': binarize(FTI_measured),
         'FTI': FTI
     }
-
     return pd.DataFrame([input_data])
+
+# Cache model loading to speed up repeated predictions
+@st.cache_resource
+def load_model(model_name):
+    if model_name == "Extra Trees":
+        return joblib.load("models/extra_trees_model.pkl")
+    elif model_name == "Random Forest":
+        return joblib.load("models/random_forest.pkl")
+    elif model_name == "LightGBM":
+        return joblib.load("models/light_gbm.pkl")
+    elif model_name == "XGBoost":
+        model = xgb.XGBClassifier()
+        model.load_model("models/xgboost_model.json")
+        return model
+    elif model_name == "CatBoost":
+        model = CatBoostClassifier()
+        model.load_model("models/catboost.json")
+        return model
+    return None
 
 # ---- Classification ----
 if model_type == "Classification (.pkl/.json)":
@@ -89,27 +114,21 @@ if model_type == "Classification (.pkl/.json)":
     ])
     input_df = get_patient_input()
 
-    if model_name == "Extra Trees":
-        model = joblib.load("models/extra_trees_model.pkl")
-
-    elif model_name == "Random Forest":
-        model = joblib.load("models/random_forest.pkl")
-
-    elif model_name == "LightGBM":
-        model = joblib.load("models/light_gbm.pkl")
-
-    elif model_name == "XGBoost":
-        model = xgb.XGBClassifier()
-        model.load_model("models/xgboost_model.json")
-
-    elif model_name == "CatBoost":
-        model = CatBoostClassifier()
-        model.load_model("models/catboost.json")
+    model = load_model(model_name)
 
     if st.button("🔮 Predict"):
         try:
             prediction = model.predict(input_df)
-            st.success(f"Prediction: {prediction[0]}")
+            pred_label = label_map.get(prediction[0], "Unknown")
+            st.success(f"Prediction: {pred_label}")
+
+            if hasattr(model, "predict_proba"):
+                probs = model.predict_proba(input_df)[0]
+                prob_df = pd.DataFrame({
+                    'Class': list(label_map.values()),
+                    'Probability': probs
+                })
+                st.table(prob_df.style.format({"Probability": "{:.2%}"}))
         except Exception as e:
             st.error(f"Prediction failed: {str(e)}")
 
@@ -126,4 +145,7 @@ elif model_type == "YOLO Object Detection (.pt)":
         st.image(image, caption="Uploaded Image", use_column_width=True)
         if st.button("🧠 Run YOLO Detection"):
             results = model.predict(image)
-            st.image(results[0].plot(), caption="Detection Result", use_column_width=True)
+            annotated_img = results[0].plot()
+            st.image(annotated_img, caption="Detection Result", use_column_width=True)
+            count = len(results[0].boxes)
+            st.write(f"Detected objects: {count}")
