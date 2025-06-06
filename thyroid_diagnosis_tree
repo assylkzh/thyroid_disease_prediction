@@ -1,0 +1,41 @@
+// Thyroid Function Test Diagnosis Tree
+digraph {
+	TSH [label="Check TSH level"]
+	"TSH>10" [label="TSH > 10 (Critical High)"]
+	SevereHypo [label="Severe Hypothyroidism (Critical)"]
+	TSH -> "TSH>10" [label="TSH > 10"]
+	"TSH>10" -> SevereHypo
+	"TSH>6" [label="TSH > 6.0 (High)"]
+	TSH -> "TSH>6" [label="6 < TSH ≤ 10"]
+	FT4_low_T3_low [label="FT4 Low AND T3 Low"]
+	Hypothyroid [label=Hypothyroidism]
+	"TSH>6" -> FT4_low_T3_low [label="Check FT4 & T3"]
+	FT4_low_T3_low -> Hypothyroid
+	FT4_norm_high [label="FT4 Normal or High"]
+	CompensatedHypo [label="Compensated Hypothyroidism
+(Normal T3, Low FT4, High TSH)"]
+	"TSH>6" -> FT4_norm_high [label="Check FT4 & T3"]
+	FT4_norm_high -> CompensatedHypo
+	TSH_norm [label="TSH Normal (0.2 – 6.0)"]
+	TSH -> TSH_norm [label="0.2 ≤ TSH ≤ 6.0"]
+	Low_T3_FT4_TT4 [label="Low T3, Low FT4, Low TT4"]
+	SickEuthyroid [label="Sick Euthyroid State /
+Non-Thyroidal Illness"]
+	TSH_norm -> Low_T3_FT4_TT4 [label="Check T3, FT4, TT4"]
+	Low_T3_FT4_TT4 -> SickEuthyroid
+	Normal [label="Normal / No Thyroid Dysfunction"]
+	TSH_norm -> Normal [label="Other values normal"]
+	TSH_low [label="TSH < 0.2 (Low)"]
+	TSH -> TSH_low [label="TSH < 0.2"]
+	High_T3_FT4 [label="High T3 AND High FT4"]
+	Hyperthyroid [label=Hyperthyroidism]
+	TSH_low -> High_T3_FT4 [label="Check T3 & FT4"]
+	High_T3_FT4 -> Hyperthyroid
+	High_T3_Suppressed_TSH [label="High T3 with Suppressed TSH"]
+	Thyrotoxicosis [label="Thyrotoxicosis (Hyperthyroid case)"]
+	TSH_low -> High_T3_Suppressed_TSH [label="Check T3 & FT4"]
+	High_T3_Suppressed_TSH -> Thyrotoxicosis
+	Others [label="Low or Normal T3 & FT4
+Possible non-thyroid causes"]
+	TSH_low -> Others [label="Other results"]
+}
