@@ -32,31 +32,52 @@ def get_patient_input():
 
     def tf(label): return st.selectbox(label, ["f", "t"])
 
-    on_thyroxine = tf("On thyroxine?")
-    query_on_thyroxine = tf("Query on thyroxine?")
-    on_antithyroid_meds = tf("On antithyroid meds?")
-    sick = tf("Sick?")
-    pregnant = tf("Pregnant?")
-    thyroid_surgery = tf("Thyroid surgery?")
-    I131_treatment = tf("I131 treatment?")
-    query_hypothyroid = tf("Query hypothyroid?")
-    query_hyperthyroid = tf("Query hyperthyroid?")
-    lithium = tf("Lithium?")
-    goitre = tf("Goitre?")
-    tumor = tf("Tumor?")
-    hypopituitary = tf("Hypopituitary?")
-    psych = tf("Psych?")
-    TSH_measured = tf("TSH measured?")
-    T3_measured = tf("T3 measured?")
-    TT4_measured = tf("TT4 measured?")
-    T4U_measured = tf("T4U measured?")
-    FTI_measured = tf("FTI measured?")
+    st.header ( "Medical History and Conditions" )
 
-    TSH = st.number_input("TSH", 0.0, 100.0, 1.2)
-    T3 = st.number_input("T3", 0.0, 10.0, 2.5)
-    TT4 = st.number_input("TT4", 0.0, 300.0, 120.0)
-    T4U = st.number_input("T4U", 0.0, 5.0, 1.0)
-    FTI = st.number_input("FTI", 0.0, 200.0, 110.0)
+    on_thyroxine = st.checkbox ( "Taking thyroxine (T4)?" )
+    query_on_thyroxine = st.checkbox ( "Prescribed thyroxine?" )
+    on_antithyroid_meds = st.checkbox ( "On antithyroid meds?" )
+    sick = st.checkbox ( "Currently sick?" )
+    pregnant = st.checkbox ( "Pregnant?" )
+    thyroid_surgery = st.checkbox ( "Had thyroid surgery?" )
+    I131_treatment = st.checkbox ( "Received I131 treatment?" )
+    query_hypothyroid = st.checkbox ( "Suspect hypothyroidism?" )
+    query_hyperthyroid = st.checkbox ( "Suspect hyperthyroidism?" )
+    lithium = st.checkbox ( "Taking lithium?" )
+    goitre = st.checkbox ( "Have goitre?" )
+    tumor = st.checkbox ( "Thyroid tumor?" )
+    hypopituitary = st.checkbox ( "Hypopituitarism?" )
+    psych = st.checkbox ( "Psychiatric condition?" )
+    TSH_measured = st.checkbox ( "TSH measured?" )
+    T3_measured = st.checkbox ( "T3 measured?" )
+    TT4_measured = st.checkbox ( "TT4 measured?" )
+    T4U_measured = st.checkbox ( "T4U measured?" )
+    FTI_measured = st.checkbox ( "FTI measured?" )
+
+    TSH = st.number_input (
+        "TSH (mIU/L)", min_value=0.0, max_value=20.0, value=1.5, step=0.1,
+        help="Normal: 0.2 – 6.0 | Critical: >10" )
+
+    FT4 = st.number_input (
+        "FT4 (pmol/L)", min_value=5.0, max_value=50.0, value=16.0, step=0.5,
+        help="Normal: 11 – 22 | Critical: <9 or >28" )
+
+    FTI = st.number_input (
+        "FTI", min_value=40.0, max_value=300.0, value=110.0, step=1.0,
+        help="Normal: 65 – 155 | Critical: <59 or >170" )
+
+    T3 = st.number_input (
+        "T3 (nmol/L)", min_value=0.5, max_value=10, value=2.0, step=0.1,
+        help="Normal: 1.2 – 2.8 | Critical: <1.0 or >3.2" )
+
+    TT4 = st.number_input (
+        "TT4 (nmol/L)", min_value=40.0, max_value=300.0, value=100.0, step=1.0,
+        help="Normal: 60 – 150 | Critical: <50 or >160" )
+
+    T4U = st.number_input (
+        "T4U", min_value=0.4, max_value=5.0, value=1.0, step=0.05,
+        help="Normal: 0.6 – 1.25 | Critical: <0.5 or >1.35" )
+
 
     input_data = {
         'age': age,
