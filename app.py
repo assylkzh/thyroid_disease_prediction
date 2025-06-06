@@ -56,28 +56,33 @@ def get_patient_input():
 
     TSH = st.number_input (
         "TSH (mIU/L)", min_value=0.0, max_value=20.0, value=1.5, step=0.1,
-        help="Normal: 0.2 – 6.0 | Critical: >10" )
+        help="Normal: 0.2 – 6.0 | Critical: >10"
+    )
 
     FT4 = st.number_input (
         "FT4 (pmol/L)", min_value=5.0, max_value=50.0, value=16.0, step=0.5,
-        help="Normal: 11 – 22 | Critical: <9 or >28" )
+        help="Normal: 11 – 22 | Critical: <9 or >28"
+    )
 
     FTI = st.number_input (
         "FTI", min_value=40.0, max_value=300.0, value=110.0, step=1.0,
-        help="Normal: 65 – 155 | Critical: <59 or >170" )
+        help="Normal: 65 – 155 | Critical: <59 or >170"
+    )
 
     T3 = st.number_input (
-        "T3 (nmol/L)", min_value=0.5, max_value=10, value=2.0, step=0.1,
-        help="Normal: 1.2 – 2.8 | Critical: <1.0 or >3.2" )
+        "T3 (nmol/L)", min_value=0.5, max_value=10.0, value=2.0, step=0.1,
+        help="Normal: 1.2 – 2.8 | Critical: <1.0 or >3.2"
+    )
 
     TT4 = st.number_input (
         "TT4 (nmol/L)", min_value=40.0, max_value=300.0, value=100.0, step=1.0,
-        help="Normal: 60 – 150 | Critical: <50 or >160" )
+        help="Normal: 60 – 150 | Critical: <50 or >160"
+    )
 
     T4U = st.number_input (
         "T4U", min_value=0.4, max_value=5.0, value=1.0, step=0.05,
-        help="Normal: 0.6 – 1.25 | Critical: <0.5 or >1.35" )
-
+        help="Normal: 0.6 – 1.25 | Critical: <0.5 or >1.35"
+    )
 
     input_data = {
         'age': age,
