@@ -17,7 +17,7 @@ label_map = {
 }
 
 st.set_page_config(page_title="Thyroid AI & YOLO", layout="wide")
-st.title("🧠 Thyroid Detection & YOLO App")
+st.title("👩🏻‍💻👩🏻‍💻 Thyroid Detection & YOLO App")
 
 model_type = st.sidebar.selectbox("Select Model Type", [
     "Classification (.pkl/.json)",
