@@ -90,6 +90,7 @@ def get_patient_input():
 
 # Cache model loading to speed up repeated predictions
 @st.cache_resource
+@st.cache_resource
 def load_model(model_name):
     if model_name == "Extra Trees":
         return joblib.load("models/extra_trees_model.pkl")
@@ -105,13 +106,22 @@ def load_model(model_name):
         model = CatBoostClassifier()
         model.load_model("models/catboost.json")
         return model
+    elif model_name == "Decision Tree":
+        return joblib.load("models/decision_tree.pkl")
+    elif model_name == "Gradient Boosting":
+        return joblib.load("models/grad_boost.pkl")
+    elif model_name == "SVM":
+        return joblib.load("models/svm_model.pkl")
     return None
+
 
 # ---- Classification ----
 if model_type == "Classification (.pkl/.json)":
-    model_name = st.selectbox("Choose Model", [
-        "Extra Trees", "Random Forest", "LightGBM", "XGBoost", "CatBoost"
-    ])
+    model_name = st.selectbox ( "Choose Model", [
+        "Extra Trees", "Random Forest", "LightGBM", "XGBoost", "CatBoost",
+        "Decision Tree", "Gradient Boosting", "SVM"
+    ] )
+
     input_df = get_patient_input()
 
     model = load_model(model_name)
