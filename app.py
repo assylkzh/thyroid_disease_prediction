@@ -59,13 +59,9 @@ def get_patient_input():
         help="Normal: 0.2 – 6.0 | Critical: >10"
     )
 
-    FT4 = st.number_input (
-        "FT4 (pmol/L)", min_value=5.0, max_value=50.0, value=16.0, step=0.5,
-        help="Normal: 11 – 22 | Critical: <9 or >28"
-    )
 
     FTI = st.number_input (
-        "FTI", min_value=40.0, max_value=300.0, value=110.0, step=1.0,
+        "FTI", min_value=30.0, max_value=300.0, value=110.0, step=1.0,
         help="Normal: 65 – 155 | Critical: <59 or >170"
     )
 
@@ -75,12 +71,12 @@ def get_patient_input():
     )
 
     TT4 = st.number_input (
-        "TT4 (nmol/L)", min_value=40.0, max_value=300.0, value=100.0, step=1.0,
+        "TT4 (nmol/L)", min_value=30.0, max_value=300.0, value=100.0, step=1.0,
         help="Normal: 60 – 150 | Critical: <50 or >160"
     )
 
     T4U = st.number_input (
-        "T4U", min_value=0.4, max_value=5.0, value=1.0, step=0.05,
+        "T4U", min_value=0.3, max_value=5.0, value=1.0, step=0.05,
         help="Normal: 0.6 – 1.25 | Critical: <0.5 or >1.35"
     )
 
